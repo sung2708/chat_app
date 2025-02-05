@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+  </head>
+  <body>
+    <h2>Golang Chat App</h2>
+    <input type="text" id="message" placeholder="Nhập tin nhắn..." />
+    <button onclick="sendMessage()">Gửi</button>
+    <ul id="messages"></ul>
+
+    <script>
+      const ws = new WebSocket("ws://localhost:8080/ws");
+
+      ws.onmessage = function (event) {
+        const msg = document.createElement("li");
+        msg.textContent = event.data;
+        document.getElementById("messages").appendChild(msg);
+      };
+
+      function sendMessage() {
+        const input = document.getElementById("message");
+        ws.send(JSON.stringify(input.value));
+        input.value = "";
+      }
+    </script>
+  </body>
+</html>
